@@ -1,6 +1,6 @@
 # Flix Home · experimental Tizen TV launcher
 
-A quiet, remote-first launcher for older Samsung Tizen TVs. Version 0.5.2 uses
+A quiet, remote-first launcher for older Samsung Tizen TVs. Version 0.5.3 uses
 an actual fixed 5×7 square-pixel clock, separated transparent vector marks,
 subtle glass cards and local focus light. The full-screen scene does not
 change during app navigation. A two-label light/dark switch stays visible;
@@ -24,12 +24,13 @@ correct light/dark rendering and responsive navigation for 0.5.0, and correct
 rendering and responsive navigation again after the 0.5.1 refinement.
 This is subjective device validation, not a measured frame-rate claim.
 
-The 0.5.2 home and settings views were also captured and visually inspected at
+The 0.5.3 home and settings views were also captured and visually inspected at
 1920×1080 in a browser. Preview data is mocked; these images are not TV footage.
 The capture harness only disables preview scaling to keep full resolution.
 No missing images or live CSS filters were found in the inspected browser view.
-The 0.5.2 package was signed, verified, installed and launched on the same TV.
-Its physical motion/rendering check is pending. Browser recordings use timestamped
+The 0.5.3 package was signed, verified, installed and launched on the same TV.
+The owner then confirmed that the full logos, removed diagonal stripe and
+pleasant transitions are correct on the TV (0.5.3). Browser recordings use timestamped
 screenshots (about 10 captured frames/s); they show navigation and are not a
 TV recording or a frame-rate benchmark.
 
@@ -60,10 +61,12 @@ disables these effects and browser prefers-reduced-motion is also respected.
 
 0.5.1 adds coloured transparent marks, labels inside the tiles, individual
 input pills with outline icons and connection indicators, and settings icons.
-Disney+ uses a compact D+ mark; HBO/max uses a plain typographic fallback.
+0.5.3 uses the full Disney+ wordmark with its arc and a stacked HBO/max
+wordmark, with transparent backgrounds and theme-appropriate lettering.
+The diagonal tile reflection stripe has been removed.
 These are deliberate asset choices, not exact reproductions of every mockup.
-0.5.2 makes the tile artwork genuinely translucent, adds restrained diagonal
-reflections and uses translucent input/toolbar materials. Settings retain dense
+0.5.2 makes the tile artwork genuinely translucent, uses quiet edge highlights and
+translucent input/toolbar materials. Settings retain dense
 surfaces for legibility. The backgrounds and the pixel clock stay fixed.
 
 ## Build and install on your own TV

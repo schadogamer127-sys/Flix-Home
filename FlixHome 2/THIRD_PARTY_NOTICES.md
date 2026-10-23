@@ -12,7 +12,7 @@ The retained license is `tools/LICENSE-AeroTizen`.
 See also the TizenSdb.Core attribution in the signer's source.
 
 Transparent brand paths and their source/license information are documented in
-`app/ASSET-SOURCES.md`. Simple Icons CC0 and the exact Custom Brand Icons MIT
+`app/ASSET-SOURCES.md`. Simple Icons CC0 and the historical Custom Brand Icons MIT
 license are retained under `tools/marks/`; the latter is also in the app.
 No TV-extracted bitmap icons, reference photographs, proprietary fonts or
 signed packages are included. Device-specific signing material stays outside
@@ -21,3 +21,9 @@ this repository. Brand names do not imply affiliation.
 Sharp is an optional development dependency with its own licenses. It is not
 bundled or needed to run the generated TV app. Python cryptography is used for
 local signing and is not included in the TV package.
+
+## Full wordmarks added in 0.5.3
+
+Disney+ (Disney Enterprises, Inc.) and HBO Max (Warner Bros. Discovery) SVG
+wordmark sources, transformations and Commons PD-textlogo notices are documented
+in app/ASSET-SOURCES.md. Trademark rights remain with their owners.

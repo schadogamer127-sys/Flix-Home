@@ -23,7 +23,6 @@ const colors={youtube:'#e45953',netflix:'#d85663',primevideo:'#63a8d6',disneyplu
     <rect x="12" y="12" width="258" height="220" rx="28" fill="url(#body)" fill-opacity="${light?(active?'.28':'.17'):(active?'.26':'.16')}" stroke="url(#edge)" stroke-width="1.2"/>
     <rect x="14" y="14" width="254" height="216" rx="26" fill="url(#shine)"/>
     <path d="M38 14H244 Q268 14 268 38" fill="none" stroke="${light?'#fffdf8':'#dbe4eb'}" opacity="${light?'.55':'.16'}" stroke-width="1"/>
-    <path d="M14 116L268 61V38Q268 14 244 14H38Q14 14 14 38Z" fill="#ffffff" opacity="${light?'.055':'.035'}"/>
     <path d="M37 229H245" fill="none" stroke="${light?'#fff9ec':'#87939e'}" opacity="${light?'.5':'.16'}" stroke-width="1"/>
    </svg>`;
    await sharp(Buffer.from(svg)).png().toFile(path.join(dir,`glass-${mode}-${active?'active':'normal'}.png`));
@@ -35,11 +34,11 @@ const colors={youtube:'#e45953',netflix:'#d85663',primevideo:'#63a8d6',disneyplu
  }
  for(const key of Object.keys(colors).filter(k=>k!=='neutral'))for(const light of [false,true]){
   let svg;
-  if(key==='max')svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 80"><text x="85" y="60" text-anchor="middle" fill="currentColor" font-family="Arial,sans-serif" font-size="68" font-weight="600" letter-spacing="-3">max</text></svg>';
-  else svg=fs.readFileSync(path.join(sourceDir,key+'.svg'),'utf8');
+  svg=fs.readFileSync(path.join(sourceDir,key+'.svg'),'utf8');
   // Colour the vector mark itself, never add an opaque logo background.
-  const brandColors={youtube:'#ff1827',netflix:'#e50914',primevideo:light?'#007da8':'#23b6ec',disneyplus:light?'#193d70':'#f1f3f6',max:light?'#7423bc':'#ac76ef',twitch:light?'#7631b8':'#ad75f1',spotify:light?'#087d39':'#48ce7a',plex:light?'#8e650d':'#e4b44e',crunchyroll:'#df712e'};
+  const brandColors={youtube:'#ff1827',netflix:'#e50914',primevideo:light?'#007da8':'#23b6ec',disneyplus:light?'#193d70':'#f1f3f6',max:light?'#171724':'#f5f5f3',twitch:light?'#7631b8':'#ad75f1',spotify:light?'#087d39':'#48ce7a',plex:light?'#8e650d':'#e4b44e',crunchyroll:'#df712e'};
   const color=brandColors[key]||(light?'#4b3d2c':'#f1f3f6');
+  if(key==='disneyplus')svg=svg.replace(/#01147c/gi,light?'#112965':'#f5f5f3');
   svg=svg.replace(/#fff(?:fff)?\b/gi,color).replace(/currentColor/g,color);
   const vb=svg.match(/viewBox="([^"]+)"/)[1].split(/\s+/).map(Number);
   const raster=await sharp(Buffer.from(svg)).resize(480,480,{fit:'fill'}).png().toBuffer();

@@ -1,7 +1,7 @@
 # Flix Home
 
 Experimental, vibe-coded launcher for the Samsung UE43NU7409 (2018, Tizen 4.0).
-Version **0.5.2**: square-pixel clock, warm light / dark themes, translucent glass cards, transparent
+Version **0.5.3**: square-pixel clock, warm light / dark themes, translucent glass cards, transparent
 app marks and gentle local transitions. Verified on this particular TV.
 
 **Physical Home replacement and reliable boot/standby autostart are not implemented.**

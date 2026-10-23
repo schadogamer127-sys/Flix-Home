@@ -16,9 +16,9 @@ The idea was a quiet interface with big app tiles, a large pixel clock, beige/li
 
 **What’s still rough**
 
-The latest pass is closer to my mockups: coloured transparent logos, labels inside the tiles, separate input pills, warm beige and a nearly black dark mode. There is still work to do on the glass material, lighting and matching the references. Some logos are simplified marks or typographic fallbacks.
+The latest pass is closer to my mockups: coloured transparent logos, labels inside the tiles, separate input pills, warm beige and a nearly black dark mode. There is still work to do on the glass material, lighting and matching the references. The Disney+ and HBO Max marks have now been replaced with complete transparent wordmarks, and the diagonal reflection stripe has been removed.
 
-Performance has also been a problem. Earlier versions lagged badly with larger animated layers. Version 0.5.2 uses translucent pre-rendered glass textures, immediate focus changes and short local opacity fades. Reduced motion can be enabled in Settings. Both themes and responsive navigation have now been checked on my actual TV, but this is still an experimental project. Some visual checks and the demo recordings were done in a browser; those aren’t proof of TV performance.
+Performance has also been a problem. Earlier versions lagged badly with larger animated layers. Version 0.5.3 uses translucent pre-rendered glass textures, immediate focus changes and short local opacity fades. Reduced motion can be enabled in Settings. Both themes and responsive navigation have now been checked on my actual TV, but this is still an experimental project. Some visual checks and the demo recordings were done in a browser; those aren’t proof of TV performance.
 
 **What I wanted, but haven’t solved**
 

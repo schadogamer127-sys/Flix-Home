@@ -1,4 +1,4 @@
-/* Flix Home 0.5.2 — translucent layers, composited focus fades. */
+/* Flix Home 0.5.3 — translucent layers, composited focus fades. */
 * { box-sizing:border-box; }
 html,body { margin:0;width:100%;height:100%;overflow:hidden;background:#15191e;font-family:'SamsungOne','Helvetica Neue',Arial,sans-serif;cursor:none; }
 button { font:inherit;color:inherit;border:0;cursor:inherit;outline:0; }
@@ -36,7 +36,7 @@ h1 { margin-left:48px;margin-bottom:0;font-size:25px;line-height:34px;color:var(
 .surface-active { opacity:0; }
 .logo-inner { position:absolute;z-index:2;top:10px;left:0;width:258px;height:154px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:28px;pointer-events:none; }
 .logo { display:block;width:120px;height:82px;object-fit:contain;opacity:1; }
-.logo-netflix { width:55px;height:80px; }.logo-youtube { width:115px;height:80px; }.logo-primevideo { width:149px;height:80px; }.logo-disneyplus { width:103px;height:90px; }.logo-twitch { width:76px;height:80px; }.logo-max { width:128px;height:65px; }
+.logo-netflix { width:55px;height:80px; }.logo-youtube { width:115px;height:80px; }.logo-primevideo { width:149px;height:80px; }.logo-disneyplus { width:184px;height:108px; }.logo-twitch { width:76px;height:80px; }.logo-max { width:156px;height:104px; }
 .fallback { font-size:68px;font-weight:500;line-height:1;color:var(--text); }
 .label { position:absolute;z-index:2;left:-10px;right:-10px;top:174px;font-size:25px;line-height:32px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
 .app.focused .tile-glow { opacity:.65; }.light .app.focused .tile-glow { opacity:.38; }
