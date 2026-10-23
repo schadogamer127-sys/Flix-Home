@@ -1,73 +1,65 @@
 # Flix Home · experimental Tizen TV launcher
 
-A quiet, remote-first launcher for older Samsung Tizen TVs. Version 0.5.3 uses
-an actual fixed 5×7 square-pixel clock, separated transparent vector marks,
-subtle glass cards and local focus light. The full-screen scene does not
-change during app navigation. A two-label light/dark switch stays visible;
-the light palette is warm beige. Favorites can be sorted/hidden with the remote.
-No ads, feeds, remote servers or analytics. No continuously running PC is needed.
+Version **0.6.1** is a local, remote-first launcher for the Samsung UE43NU7409
+(2018). A large constructed square-pixel clock, flat black / warm ivory themes,
+minimal transparent glass tiles and one local brand-coloured focus rim.
+No ads, feeds, analytics or continuously running computer are needed.
 
-**This is a launchable TV app. Physical Home interception and reliable boot or
-standby autostart are not implemented. It is not a full replacement TV OS.**
-Samsung Home remains available from Settings and the physical remote.
+**Physical Home replacement and reliable cold-boot/standby autostart are not
+implemented. This remains a launchable app; Samsung Home is preserved.**
+
+## Current design
+
+- Flat backgrounds: #000000 dark and #F3EFE6 light. No gradients, horizon,
+  ground shadows, reflections, texture or global colour changes.
+- Fixed square-pixel SVG geometry; seconds are smaller. Only changed digits
+  perform a 280 ms two-phase folding movement, requested after the static pass.
+  Settings → Animationen toggles Klappuhr / Reduziert. Browser reduced-motion
+  preferences also suppress the folding overlay. Card focus remains immediate.
+- Quiet neutral glass, fine rims and no outer card shadows. A narrow precomputed
+  glow belongs only to the active card. No fading trail or multiple active glows.
+- Full transparent Disney+ and stacked HBO/max wordmarks; names inside cards.
+- A compact 760×688 settings panel with equal 64 px rows. Only its menu has focus
+  while open. A tiny canvas snapshot (48×43) is computed once per opening and
+  enlarged to soften the content behind the translucent panel. This snapshot is
+  a visual approximation, remains static until reopening, and uses no live blur
+  filter or continuous render loop. The real clock continues behind the overlay.
+
+![Home and settings in both themes — browser captures](docs/preview.jpg)
 
 ## Compatibility and evidence
 
-Development target: Samsung UE43NU7409 (2018), reported firmware
-T-KTM2DEUC-1360.0, Tizen 4.0 / ARMv7 confirmed via SDB. The code targets its old
-web engine: no ES modules, CSS grid, live backdrop blur or external fonts.
-Other TVs are untested; this repository does not remove any firmware guards.
+Target: Samsung UE43NU7409, firmware T-KTM2DEUC-1360.0, Tizen 4.0 / ARMv7
+confirmed via SDB. No ES modules, CSS grid, external fonts or live backdrop blur.
+Other models are untested; the installer guard is intentionally narrow.
 
-On the target, YouTube launch and Samsung Home return were physically confirmed.
-Both 0.5.0 and 0.5.1 were installed and launched successfully. The owner confirmed
-correct light/dark rendering and responsive navigation for 0.5.0, and correct
-rendering and responsive navigation again after the 0.5.1 refinement.
-This is subjective device validation, not a measured frame-rate claim.
+0.6.1 was signed, verified, installed and launched on this TV. After 0.6.0's
+focus light was reported too weak and the folding clock requested, the owner
+confirmed in 0.6.1 that both the visible tile light and folding digits work.
+Earlier builds also received physical confirmation for YouTube launching,
+Samsung Home return and responsive navigation in both themes. This is user
+validation, not a measured frame-rate benchmark.
 
-The 0.5.3 home and settings views were also captured and visually inspected at
-1920×1080 in a browser. Preview data is mocked; these images are not TV footage.
-The capture harness only disables preview scaling to keep full resolution.
-No missing images or live CSS filters were found in the inspected browser view.
-The 0.5.3 package was signed, verified, installed and launched on the same TV.
-The owner then confirmed that the full logos, removed diagonal stripe and
-pleasant transitions are correct on the TV (0.5.3). Browser recordings use timestamped
-screenshots (about 10 captured frames/s); they show navigation and are not a
-TV recording or a frame-rate benchmark.
+Browser QA at 1920×1080 covers both homes, both settings panels, and YouTube,
+Netflix, Prime Video and Twitch focus states. The flat scene assets each contain
+one colour. Exactly one card glow is visible; none remain active in a dialog.
+Clock folding was captured in intermediate states. Screenshots use mock apps
+and inputs and are **browser captures, not TV footage**. The capture harness
+only disables preview scaling to retain full resolution.
 
-HDMI switching to a connected source, physical Home replacement, cold boot and
-standby autostart remain unverified or unsupported. A settings launch callback
-previously returned success without visible settings, so that shortcut routes
-through Samsung Home. No root or service-menu access is required or provided.
+HDMI switching to a connected source remains unverified. A direct settings API
+callback previously reported success without opening a visible menu, so settings
+route through Samsung Home. No root, firmware changes or service disabling.
 
-## Preview
-
-Serve `app/` with any static HTTP server, for example:
+## Browser preview
 
 ```sh
 python3 -m http.server 8092 --bind 127.0.0.1 --directory app
 ```
 
-Open http://127.0.0.1:8092. A browser uses mock apps and inputs.
-Use arrow keys, Enter and Escape. On TV, use the remote's arrows, OK and Back.
-Hold OK to edit an app; The visible top-right switch always shows Hell and Dunkel; the selected half and keyboard focus have separate indicators. Settings also contains the toggle. Preferences
-stay in localStorage. Only changed matrix paths update once a second; digit size and spacing stay
-fixed. Focus updates immediately. Local light, reflection and rim opacity fade for 160 ms;
-the theme thumb moves for 180 ms and the settings panel enters gently for 160 ms.
-There is no spring, scale animation, live blur or moving background.
-Settings → Animationen switches between Sanft and Reduziert. Reduced motion
-disables these effects and browser prefers-reduced-motion is also respected.
-
-![Home and settings in both themes — browser preview](docs/preview.jpg)
-
-0.5.1 adds coloured transparent marks, labels inside the tiles, individual
-input pills with outline icons and connection indicators, and settings icons.
-0.5.3 uses the full Disney+ wordmark with its arc and a stacked HBO/max
-wordmark, with transparent backgrounds and theme-appropriate lettering.
-The diagonal tile reflection stripe has been removed.
-These are deliberate asset choices, not exact reproductions of every mockup.
-0.5.2 makes the tile artwork genuinely translucent, uses quiet edge highlights and
-translucent input/toolbar materials. Settings retain dense
-surfaces for legibility. The backgrounds and the pixel clock stay fixed.
+Open http://127.0.0.1:8092. Use arrows, Enter and Escape. Hold OK on TV to edit
+an app. Favorites can be sorted or hidden; preferences persist in localStorage.
+The visible Hell/Dunkel control distinguishes the selected mode from focus.
 
 ## Build and install on your own TV
 

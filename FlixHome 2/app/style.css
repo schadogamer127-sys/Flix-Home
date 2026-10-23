@@ -1,4 +1,4 @@
-/* Flix Home 0.5.3 — translucent layers, composited focus fades. */
+/* Flix Home 0.6.1 — translucent layers, composited focus fades. */
 * { box-sizing:border-box; }
 html,body { margin:0;width:100%;height:100%;overflow:hidden;background:#15191e;font-family:'SamsungOne','Helvetica Neue',Arial,sans-serif;cursor:none; }
 button { font:inherit;color:inherit;border:0;cursor:inherit;outline:0; }
@@ -64,18 +64,65 @@ footer { position:absolute;left:126px;right:126px;bottom:48px;display:flex;justi
 .option-detail { color:var(--muted);font-size:22px;padding-left:28px;white-space:nowrap; }
 #toast { position:absolute;z-index:20;left:360px;right:360px;bottom:142px;padding:24px;border:1px solid var(--rim);border-radius:24px;background:var(--elevated);color:var(--text);box-shadow:0 10px 28px var(--shadow);font-size:25px;text-align:center; }
 .empty-state { padding:24px;font-size:28px; }.no-glow .tile-glow { display:none; }
-/* Only opacity and the small switch thumb animate; focus itself is immediate.
-   No live blur, animated shadows, global colour motion or animation queues. */
-.tile-glow,.surface,.app:after { transition:opacity 160ms cubic-bezier(.2,.65,.3,1); }
-.mode-selection { transition:transform 180ms cubic-bezier(.2,.65,.3,1); }
-.nav-label { transition:opacity 140ms ease-out; }
-#modal:not(.hidden) #dialog { animation:dialog-in 160ms ease-out both; }
-@keyframes dialog-in { from { opacity:0;transform:translateY(7px); } to { opacity:1;transform:translateY(0); } }
-.reduce-motion .tile-glow,.reduce-motion .surface,.reduce-motion .app:after,.reduce-motion .mode-selection,.reduce-motion .nav-label { transition:none; }
-.reduce-motion #dialog { animation:none!important; }
-@media (prefers-reduced-motion:reduce) { .tile-glow,.surface,.app:after,.mode-selection,.nav-label {transition:none!important} #dialog{animation:none!important} }
-
+/* 0.6.1 static focus review: no animation or queued transitions. */
 /* Brand accents remain local to the selected card. */
 .app[data-brand="youtube"]{--app-accent:#ff6a50}.app[data-brand="netflix"]{--app-accent:#e45b61}.app[data-brand="primevideo"]{--app-accent:#55b7e1}.app[data-brand="disneyplus"]{--app-accent:#72bdde}.app[data-brand="max"]{--app-accent:#b08bdc}.app[data-brand="twitch"]{--app-accent:#b28eea}
 .light .app[data-brand="primevideo"]{--app-accent:#2886aa}.light .app[data-brand="disneyplus"]{--app-accent:#476e9c}.light .app[data-brand="max"],.light .app[data-brand="twitch"]{--app-accent:#8854ae}
 .option-icon{width:30px;height:30px;margin-right:24px;flex-shrink:0;color:var(--muted)}.option-name{flex:1}.option-detail{flex-shrink:0}
+
+/* Final Minimal Glass specification: one flat canvas and a single local focus. */
+#stage { --text:#f5f2ec;--muted:#c1bdb7;--subtle:#97928b;--surface:rgba(255,255,255,.035);--elevated:rgba(20,20,22,.50);--rim:rgba(255,255,255,.20);--focus:#e7ddca;--focus-fill:rgba(255,255,255,.065);--overlay:rgba(0,0,0,.10);--inner:rgba(255,255,255,.05); }
+#stage.light { --text:#302b25;--muted:#625d56;--subtle:#777169;--surface:rgba(255,255,255,.30);--elevated:rgba(255,255,255,.45);--rim:rgba(255,255,255,.65);--focus:#9b8057;--focus-fill:rgba(255,255,255,.30);--overlay:rgba(48,43,37,.045);--inner:rgba(255,255,255,.20); }
+header { left:580px; }
+#clock { color:#f5f2ec; }.light #clock { color:#312c26; }
+.matrix-digit,.matrix-colon { stroke:none; }
+#toolbar,.input { background:var(--surface);box-shadow:inset 0 1px 0 var(--inner); }
+#toolbar { border-color:var(--rim); }
+#content { left:56px;top:384px;width:1808px; }
+h1 { font-size:28px; }
+#viewport { width:1808px; }
+#tiles { width:1728px; }
+.app { width:268px;margin-right:20px; }
+.surface { width:292px; }
+.tile-glow { width:340px; }
+.logo-inner { width:268px; }
+.label { left:0;right:0;font-weight:400; }
+.app.focused .label { font-weight:500; }
+.app:after { width:268px;box-shadow:inset 0 0 0 1.5px var(--app-accent,var(--focus)); }
+.app.focused .tile-glow,.light .app.focused .tile-glow { opacity:1; }
+.app[data-brand="youtube"]{--app-accent:#ff3b30}.app[data-brand="netflix"]{--app-accent:#e50914}.app[data-brand="primevideo"]{--app-accent:#00a8e1}.app[data-brand="disneyplus"]{--app-accent:#3d8bff}.app[data-brand="max"]{--app-accent:#8b5cf6}.app[data-brand="twitch"]{--app-accent:#9146ff}
+.light .app[data-brand="primevideo"]{--app-accent:#0086b4}.light .app[data-brand="disneyplus"]{--app-accent:#377acb}.light .app[data-brand="max"],.light .app[data-brand="twitch"]{--app-accent:#8450cb}
+#sources { left:104px;top:808px;width:1712px; }
+.input { border-radius:43px; }
+.input.focused { background:var(--focus-fill);box-shadow:inset 0 0 0 1.5px var(--focus); }
+footer { left:104px;right:104px; }
+.pill.focused,.theme-switch.focused { box-shadow:inset 0 0 0 1.5px var(--focus); }
+.mode-selection { background:#f5f2ec;box-shadow:inset 0 0 0 1px rgba(255,255,255,.50); }
+.light .mode-selection { background:#fffcf5; }
+#dialog { width:760px;padding:28px;border-radius:28px;background:var(--elevated);border-color:var(--rim);box-shadow:inset 0 1px 0 var(--inner); }
+#dialog h2 { margin:0 8px 20px;font-size:32px;line-height:42px; }
+.option,.option.group-start { min-height:64px;height:64px;margin-top:8px;padding:14px 16px;border-radius:17px;border:1px solid rgba(255,255,255,.075);background:rgba(255,255,255,.025);font-size:24px;line-height:32px; }
+.light .option { background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.35); }
+.option.focused { background:var(--focus-fill);box-shadow:inset 0 0 0 1px var(--focus);border-color:var(--focus); }
+.option-icon { width:26px;height:26px;margin-right:20px; }
+.option-detail { font-size:21px;padding-left:16px; }
+#toast { box-shadow:none;background:var(--elevated); }
+
+/* One low-resolution snapshot behind the glass panel, generated only on open. */
+#dialog { position:relative;overflow:hidden;background:none; }
+.panel-backdrop { position:absolute;inset:0;left:0;top:0;width:100%;height:100%;z-index:0;pointer-events:none; }
+#dialog:after { content:'';position:absolute;left:0;top:0;right:0;bottom:0;z-index:1;pointer-events:none;background:var(--elevated);box-shadow:inset 0 1px 0 var(--inner);border-radius:inherit; }
+#dialog h2,#options { position:relative;z-index:2; }
+
+/* Only changed pixel digits fold; card focus remains immediate and static. */
+.matrix-overlay { display:none;fill:currentColor; }
+.matrix-overlay.flipping { display:block; }
+.matrix-fold-top,.matrix-fold-bottom { transform-origin:0 0; }
+.flipping .matrix-fold-top { animation:pixel-fold-top 280ms ease-in both; }
+.flipping .matrix-fold-bottom { animation:pixel-fold-bottom 280ms ease-out both; }
+.flipping .matrix-old-bottom { animation:pixel-old-bottom 280ms steps(1,end) both; }
+@keyframes pixel-fold-top { 0%{transform:scaleY(1);opacity:1} 49%,100%{transform:scaleY(0);opacity:.5} }
+@keyframes pixel-fold-bottom { 0%,50%{transform:scaleY(0);opacity:.65} 100%{transform:scaleY(1);opacity:1} }
+@keyframes pixel-old-bottom { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+.reduce-motion .matrix-overlay { display:none!important; }
+@media(prefers-reduced-motion:reduce){.matrix-overlay{display:none!important}}

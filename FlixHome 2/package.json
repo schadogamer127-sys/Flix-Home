@@ -1,6 +1,6 @@
 {
   "name": "flix-home-tizen",
-  "version": "0.5.3",
+  "version": "0.6.1",
   "private": true,
   "description": "Minimal experimental Tizen TV launcher",
   "scripts": {
