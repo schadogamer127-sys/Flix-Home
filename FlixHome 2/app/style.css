@@ -1,91 +1,70 @@
-/* Flix Home 0.4.1: Tizen 4 / Chromium 56. Static scene; local opacity transitions. */
-* { box-sizing: border-box; }
-html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #11161d; color: #f2f3f5; font-family: 'SamsungOne', 'Helvetica Neue', Arial, sans-serif; cursor: none; }
-button { font: inherit; color: inherit; outline: 0; border: 0; cursor: inherit; }
-#stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; transform-origin: 0 0; }
-#background { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: url('assets/scene-dark.png') center / 100% 100% no-repeat; }
-header { position: absolute; top: 100px; left: 630px; width: 660px; text-align: center; }
-#clock { width: 660px; height: 157px; color: #f4f2ea; background: none; }
-#clock svg { width: 660px; height: 157px; display: block; }
-.matrix-digit, .matrix-colon { fill: currentColor; stroke: currentColor; stroke-opacity: .18; stroke-width: .7; }
-#date { color: #c1c7cf; font-size: 29px; line-height: 40px; margin-top: 26px; }
-#toolbar { position: absolute; right: 108px; top: 128px; display: flex; align-items: center; padding: 8px; height: 80px; border: 1px solid #4a515c; border-radius: 42px; background: #272e38; }
-.pill { position: relative; display: flex; align-items: center; justify-content: center; width: 62px; height: 62px; margin-right: 6px; background: transparent; border-radius: 32px; color: #d4dae1; }
-.pill svg { width: 28px; height: 28px; }
-.nav-label { position: absolute; top: 86px; left: -62px; width: 186px; text-align: center; font-size: 22px; white-space: nowrap; opacity: 0; }
-.pill.focused { color: #fff; box-shadow: 0 0 0 3px #e9cf9a; }
-.pill.focused .nav-label { opacity: 1; }
-.theme-switch { width: 238px; margin: 0 0 0 8px; padding: 0; background: #121820; border: 1px solid #626b78; }
-.mode-selection { position: absolute; top: 5px; left: 5px; width: 112px; height: 50px; border-radius: 27px; background: #eef0f2; transform: translateX(114px); transition: transform 160ms ease-out; }
-.mode-label { position: relative; z-index: 1; display: block; width: 50%; font-size: 23px; text-align: center; font-weight: 500; }
-.mode-light { color: #cbd3dd; }
-.mode-dark { color: #202730; font-weight: 600; }
-#content { position: absolute; left: 78px; top: 346px; width: 1764px; }
-h1, h2 { font-weight: 500; margin: 0; }
-h1 { margin-left: 48px; margin-bottom: 8px; font-size: 29px; line-height: 34px; color: #d7dce3; }
-/* Padding is larger than the halo. The clipped scrolling viewport never clips a visible tile's own glow. */
-#viewport { height: 520px; width: 1764px; padding: 38px 48px 40px; overflow: hidden; }
-#tiles { display: flex; flex-wrap: wrap; width: 1692px; }
-.app { position: relative; flex-shrink: 0; width: 258px; height: 197px; margin: 0 24px 31px 0; padding: 0; border: 0; background: transparent; text-align: center; overflow: visible; }
-.tile-glow { position: absolute; z-index: 0; left: -36px; top: -36px; width: 330px; height: 230px; opacity: 0; pointer-events: none; transition: opacity 160ms ease-out; }
-.surface { position: absolute; left: 0; top: 0; width: 258px; height: 158px; z-index: 1; pointer-events: none; }
-.surface-active { opacity: 0; transition: opacity 160ms ease-out; }
-.logo-inner { position: absolute; z-index: 2; top: 0; left: 0; width: 258px; height: 158px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 24px; pointer-events: none; }
-.logo { display: block; width: 132px; height: 94px; object-fit: contain; opacity: 1; }
-.logo-netflix { width: 68px; height: 91px; }
-.logo-youtube { width: 129px; height: 91px; }
-.logo-primevideo { width: 166px; height: 91px; }
-.logo-disneyplus { width: 110px; height: 96px; }
-.logo-twitch { width: 89px; height: 93px; }
-.logo-max { width: 137px; height: 91px; }
-.fallback { font-size: 75px; font-weight: 500; line-height: 1; color: #f2f3f5; }
-.label { position: absolute; z-index: 2; left: -10px; right: -10px; top: 178px; font-size: 25px; line-height: 30px; color: #c4cbd4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.app.focused .tile-glow { opacity: .85; }
-.app.focused .surface-active { opacity: 1; }
-.app.focused .label { color: #fff; font-weight: 600; }
-/* A separate, immediate rim identifies focus even mid-fade or on rapid input. */
-.app.focused:after { content: ''; position: absolute; z-index: 3; left: 0; top: 0; width: 258px; height: 158px; border: 2px solid #f6e5bc; border-radius: 24px; pointer-events: none; }
-#sources { position: absolute; left: 126px; top: 932px; width: 1668px; }
-#sources h2 { float: left; width: 164px; font-size: 25px; line-height: 66px; color: #c4cbd4; }
-#input-row { display: flex; }
-.input { min-width: 220px; height: 66px; padding: 0 24px; margin-right: 16px; border: 1px solid #59616d; border-radius: 24px; background: #272f3a; color: #e4e8ee; text-align: left; font-size: 24px; }
-.input small { margin-left: 14px; font-size: 18px; color: #b4bfce; }
-.input.focused { box-shadow: 0 0 0 3px #ead3a3; background: #394454; color: #fff; }
-footer { position: absolute; left: 126px; right: 126px; bottom: 26px; display: flex; justify-content: space-between; color: #abb6c5; font-size: 19px; }
-.hidden { display: none !important; }
-#modal { position: absolute; z-index: 10; top: 0; left: 0; width: 1920px; height: 1080px; background: rgba(4,8,14,.72); display: flex; align-items: center; justify-content: center; }
-#dialog { width: 860px; padding: 36px; border: 1px solid #657182; border-radius: 30px; background: #252e3a; box-shadow: 0 18px 40px rgba(0,0,0,.22); }
-#dialog h2 { margin: 0 16px 25px; font-size: 35px; line-height: 44px; color: #fff; }
-.option { display: block; width: 100%; min-height: 66px; padding: 16px 24px; margin-top: 10px; border: 1px solid #4c596b; border-radius: 17px; background: #303b49; color: #eef1f5; text-align: left; font-size: 27px; line-height: 34px; }
-.option.focused { background: #435268; color: #fff; box-shadow: 0 0 0 3px #ead3a3; }
-#toast { position: absolute; z-index: 20; left: 360px; right: 360px; bottom: 104px; padding: 22px; border: 1px solid #6d7d90; border-radius: 22px; background: #2a3544; color: #fff; font-size: 25px; text-align: center; }
-.empty-state { padding: 24px; font-size: 28px; }
-/* Day palette: continuous warm ivory scene, dark type, dense menu surfaces. */
-.light { color: #3f352a; }
-.light #background { background-image: url('assets/scene-light.png'); }
-.light #clock { color: #4b4032; }
-.light #date, .light h1, .light #sources h2, .light .label { color: #615342; }
-.light #toolbar { background: #eee4d2; border-color: #bcb09b; }
-.light .pill { color: #574936; }
-.light .pill.focused { box-shadow: 0 0 0 3px #705528; color: #33291c; }
-.light .theme-switch { background: #c8b99e; border-color: #a48e6b; }
-.light .mode-selection { background: #fff9eb; transform: translateX(0); }
-.light .mode-light { color: #3c3021; font-weight: 600; }
-.light .mode-dark { color: #473b2b; font-weight: 400; }
-.light .fallback { color: #483b29; }
-.light .app.focused .label { color: #3c2c16; }
-.light .app.focused:after { border-color: #8c6a32; }
-.light .app.focused .tile-glow { opacity: .6; }
-.light .input { background: #eee4d2; border-color: #b6a68c; color: #483a27; }
-.light .input small { color: #716147; }
-.light .input.focused { box-shadow: 0 0 0 3px #705528; background: #fff4de; color: #33291c; }
-.light footer { color: #77684f; }
-.light #modal { background: rgba(64,49,29,.42); }
-.light #dialog { background: #f0e5d0; border-color: #a89572; box-shadow: 0 18px 40px rgba(60,40,10,.16); }
-.light #dialog h2 { color: #3b2f20; }
-.light .option { color: #473823; background: #e6d8be; border-color: #b5a181; }
-.light .option.focused { color: #2e2110; background: #fff5df; box-shadow: 0 0 0 3px #705528; }
-.light #toast { background: #fff3dc; color: #3c2f1c; border-color: #9b8156; }
-.reduce-motion .tile-glow, .reduce-motion .surface-active, .reduce-motion .mode-selection { transition: none; }
-.no-glow .tile-glow { display: none; }
-@media (prefers-reduced-motion: reduce) { .tile-glow, .surface-active, .mode-selection { transition: none; } }
+/* Flix Home 0.5.0 — static material study. Tizen 4 / Chromium 56. */
+* { box-sizing:border-box; }
+html,body { margin:0;width:100%;height:100%;overflow:hidden;background:#15191e;font-family:'SamsungOne','Helvetica Neue',Arial,sans-serif;cursor:none; }
+button { font:inherit;color:inherit;border:0;cursor:inherit;outline:0; }
+#stage { --text:#f0f1ef;--muted:#b5bbc2;--subtle:#969fa9;--surface:#11151a;--elevated:#15191e;--rim:rgba(219,228,239,.22);--focus:#e8edf0;--focus-fill:#2d3237;--overlay:rgba(0,0,0,.48);--inner:rgba(255,255,255,.13);--shadow:rgba(0,0,0,.22);position:relative;width:1920px;height:1080px;overflow:hidden;transform-origin:0 0;color:var(--text); }
+#stage.light { --text:#342f29;--muted:#655e54;--subtle:#776e61;--surface:#f6f0e6;--elevated:#f5eee3;--rim:rgba(111,96,76,.20);--focus:#b57848;--focus-fill:#fffbf3;--overlay:rgba(65,53,35,.26);--inner:rgba(255,255,255,.85);--shadow:rgba(74,57,32,.12); }
+#background { position:absolute;left:0;top:0;width:1920px;height:1080px;background:url('assets/scene-dark.png') center/100% 100% no-repeat; }
+.light #background { background-image:url('assets/scene-light.png'); }
+header { position:absolute;top:120px;left:580px;width:760px;text-align:center; }
+#clock { width:760px;height:180px;color:var(--text);background:none; }
+#clock svg { width:760px;height:180px;display:block; }
+.matrix-digit,.matrix-colon { fill:currentColor;stroke:currentColor;stroke-opacity:.13;stroke-width:.55; }
+#date { color:var(--muted);font-size:28px;line-height:40px;margin-top:27px;letter-spacing:.3px; }
+#toolbar { position:absolute;right:108px;top:88px;display:flex;align-items:center;height:76px;padding:7px;border:1px solid var(--rim);border-radius:39px;background:linear-gradient(155deg,rgba(255,255,255,.065),rgba(255,255,255,0)),var(--surface);box-shadow:inset 0 1px 0 var(--inner),0 8px 18px var(--shadow); }
+.pill { position:relative;display:flex;align-items:center;justify-content:center;width:60px;height:60px;margin-right:5px;background:transparent;border-radius:30px;color:var(--muted); }
+.pill svg { width:27px;height:27px; }
+.nav-label { position:absolute;top:82px;left:-64px;width:188px;text-align:center;font-size:22px;white-space:nowrap;opacity:0;color:var(--text); }
+.pill.focused { color:var(--text);background:var(--focus-fill);box-shadow:0 0 0 2px var(--focus),inset 0 1px 0 var(--inner); }
+.pill.focused .nav-label { opacity:1; }
+.theme-switch { width:220px;margin:0 0 0 14px;background:rgba(0,0,0,.20);box-shadow:inset 0 2px 5px rgba(0,0,0,.18);border:1px solid var(--rim); }
+.theme-switch.focused { background:rgba(0,0,0,.20);box-shadow:0 0 0 2px var(--focus); }
+.mode-selection { position:absolute;top:5px;left:5px;width:103px;height:48px;border-radius:26px;background:linear-gradient(#f5f5f0,#cbd0d3);box-shadow:inset 0 1px 0 #fff,0 3px 6px rgba(0,0,0,.25);transform:translateX(105px); }
+.mode-label { position:relative;z-index:1;display:block;width:50%;font-size:22px;text-align:center;font-weight:500; }
+.mode-light { color:#c5cbd2; }.mode-dark { color:#252b31;font-weight:600; }
+.light .theme-switch,.light .theme-switch.focused { background:#d9d0c1; }
+.light .mode-selection { background:linear-gradient(#fffdf6,#f3eadb);transform:translateX(0); }
+.light .mode-light { color:#332e27;font-weight:600; }.light .mode-dark { color:#62594b;font-weight:400; }
+#content { position:absolute;left:78px;top:396px;width:1764px; }
+h1,h2 { margin:0;font-weight:500; }
+h1 { margin-left:48px;margin-bottom:0;font-size:25px;line-height:34px;color:var(--muted);letter-spacing:.4px; }
+#viewport { height:284px;width:1764px;padding:32px 48px 28px;overflow:hidden; }
+#tiles { display:flex;flex-wrap:wrap;width:1692px; }
+.app { position:relative;flex-shrink:0;width:258px;height:220px;margin:0 24px 32px 0;padding:0;background:transparent;text-align:center;overflow:visible; }
+.tile-glow { position:absolute;z-index:0;left:-36px;top:-30px;width:330px;height:284px;opacity:0;pointer-events:none; }
+.surface { position:absolute;left:-12px;top:-12px;width:282px;height:248px;z-index:1;pointer-events:none; }
+.surface-active { opacity:0; }
+.logo-inner { position:absolute;z-index:2;top:10px;left:0;width:258px;height:154px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:28px;pointer-events:none; }
+.logo { display:block;width:120px;height:82px;object-fit:contain;opacity:1; }
+.logo-netflix { width:55px;height:80px; }.logo-youtube { width:115px;height:80px; }.logo-primevideo { width:149px;height:80px; }.logo-disneyplus { width:103px;height:90px; }.logo-twitch { width:76px;height:80px; }.logo-max { width:128px;height:65px; }
+.fallback { font-size:68px;font-weight:500;line-height:1;color:var(--text); }
+.label { position:absolute;z-index:2;left:-10px;right:-10px;top:174px;font-size:25px;line-height:32px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.app.focused .tile-glow { opacity:.65; }.light .app.focused .tile-glow { opacity:.38; }
+.app.focused .surface-active { opacity:1; }
+.app.focused .label { color:var(--text);font-weight:600; }
+.app.focused:after { content:'';position:absolute;z-index:3;left:0;top:0;width:258px;height:220px;border-radius:28px;box-shadow:0 0 0 2px var(--app-accent,var(--focus));pointer-events:none; }
+#sources { position:absolute;left:126px;top:818px;width:1668px; }
+#sources h2 { font-size:27px;line-height:40px;color:var(--muted); }
+#input-row { display:flex;margin-top:24px; }
+.input { position:relative;display:flex;align-items:center;width:290px;height:86px;padding:0 24px;margin-right:20px;border:1px solid var(--rim);border-radius:29px;background:linear-gradient(145deg,rgba(255,255,255,.065),transparent),var(--surface);box-shadow:inset 0 1px 0 var(--inner),0 5px 12px var(--shadow);color:var(--text);text-align:left;font-size:24px; }
+.input:last-child { margin-right:0; }.input-symbol { width:40px;height:40px;flex-shrink:0;margin-right:20px; }
+.input-copy { display:block;line-height:30px; }.input small { display:block;font-size:19px;line-height:24px;color:var(--muted); }
+.input-status { position:absolute;right:22px;top:37px;width:12px;height:12px;background:#7e858d;border-radius:50%; }.input-status.connected { background:#35d36a; }.light .input-status.connected { background:#188640; }
+.input.focused { background:var(--focus-fill);box-shadow:0 0 0 2px var(--focus),inset 0 1px 0 var(--inner); }
+footer { position:absolute;left:126px;right:126px;bottom:48px;display:flex;justify-content:space-between;color:var(--subtle);font-size:20px; }
+.hidden { display:none!important; }
+#modal { position:absolute;z-index:10;top:0;left:0;width:1920px;height:1080px;background:var(--overlay);display:flex;align-items:center;justify-content:center; }
+#dialog { width:890px;padding:38px 28px 28px;border:1px solid var(--rim);border-radius:32px;background:linear-gradient(145deg,rgba(255,255,255,.06),transparent 48%),var(--elevated);box-shadow:inset 0 1px 0 var(--inner),0 22px 50px var(--shadow); }
+#dialog h2 { margin:0 24px 28px;font-size:38px;line-height:48px;font-weight:500;letter-spacing:-.5px;color:var(--text); }
+.option { display:flex;align-items:center;justify-content:space-between;width:100%;min-height:76px;padding:18px 24px;margin-top:4px;border:1px solid transparent;border-radius:20px;background:transparent;color:var(--text);text-align:left;font-size:27px;line-height:34px; }
+.option.group-start { margin-top:20px; }
+.option.focused { background:linear-gradient(150deg,rgba(255,255,255,.07),transparent),var(--focus-fill);box-shadow:0 0 0 2px var(--focus),inset 0 1px 0 var(--inner); }
+.option-detail { color:var(--muted);font-size:22px;padding-left:28px;white-space:nowrap; }
+#toast { position:absolute;z-index:20;left:360px;right:360px;bottom:142px;padding:24px;border:1px solid var(--rim);border-radius:24px;background:var(--elevated);color:var(--text);box-shadow:0 10px 28px var(--shadow);font-size:25px;text-align:center; }
+.empty-state { padding:24px;font-size:28px; }.no-glow .tile-glow { display:none; }
+/* Static review: no transitions, filters, zoom or continuous effects. */
+
+/* Brand accents remain local to the selected card. */
+.app[data-brand="youtube"]{--app-accent:#ff6a50}.app[data-brand="netflix"]{--app-accent:#e45b61}.app[data-brand="primevideo"]{--app-accent:#55b7e1}.app[data-brand="disneyplus"]{--app-accent:#72bdde}.app[data-brand="max"]{--app-accent:#b08bdc}.app[data-brand="twitch"]{--app-accent:#b28eea}
+.light .app[data-brand="primevideo"]{--app-accent:#2886aa}.light .app[data-brand="disneyplus"]{--app-accent:#476e9c}.light .app[data-brand="max"],.light .app[data-brand="twitch"]{--app-accent:#8854ae}
+.option-icon{width:30px;height:30px;margin-right:24px;flex-shrink:0;color:var(--muted)}.option-name{flex:1}.option-detail{flex-shrink:0}

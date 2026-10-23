@@ -1,0 +1,15 @@
+node_modules/
+__pycache__/
+*.pyc
+*.wgt
+*.p12
+*.pem
+*.key
+.env*
+.local/
+certificates/
+password.txt
+device-profile.xml
+author-signature.xml
+signature1.xml
+.DS_Store

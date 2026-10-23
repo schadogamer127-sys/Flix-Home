@@ -19,7 +19,7 @@
  }
  // Each glyph is a fixed 5 × 7 map. Only changed paths are updated once a second.
  var digits=[
-  ['01110','10001','10011','10101','11001','10001','01110'],
+  ['01110','10001','10001','10001','10001','10001','01110'],
   ['00100','01100','00100','00100','00100','00100','01110'],
   ['01110','10001','00001','00010','00100','01000','11111'],
   ['11110','00001','00001','01110','00001','00001','11110'],
@@ -33,9 +33,9 @@
  var clockPaths=[],clockValues='',svgNS='http://www.w3.org/2000/svg';
  function matrixPath(value,size,gap){var path='';digits[Number(value)].forEach(function(row,y){row.split('').forEach(function(on,x){if(on==='1')path+='M'+(x*(size+gap))+' '+(y*(size+gap))+'h'+size+'v'+size+'h-'+size+'z';});});return path;}
  function makeClock(){
-  var svg=document.createElementNS(svgNS,'svg');svg.setAttribute('viewBox','0 0 610 145');svg.setAttribute('aria-hidden','true');
-  [0,104,242,346,478,543].forEach(function(x,i){var path=document.createElementNS(svgNS,'path');path.setAttribute('class','matrix-digit');path.setAttribute('transform','translate('+x+' '+(i<4?4:58)+')');svg.appendChild(path);clockPaths.push(path);});
-  [218,456].forEach(function(x,i){var path=document.createElementNS(svgNS,'path'),size=i?7:13,y=i?76:39;path.setAttribute('d','M'+x+' '+y+'h'+size+'v'+size+'h-'+size+'z M'+x+' '+(y+(i?29:48))+'h'+size+'v'+size+'h-'+size+'z');path.setAttribute('class','matrix-colon');svg.appendChild(path);});
+  var svg=document.createElementNS(svgNS,'svg');svg.setAttribute('viewBox','0 0 625 145');svg.setAttribute('aria-hidden','true');
+  [0,110,250,360,492,558].forEach(function(x,i){var path=document.createElementNS(svgNS,'path');path.setAttribute('class','matrix-digit');path.setAttribute('transform','translate('+x+' '+(i<4?4:58)+')');svg.appendChild(path);clockPaths.push(path);});
+  [224,470].forEach(function(x,i){var path=document.createElementNS(svgNS,'path'),size=i?7:13,y=i?76:39;path.setAttribute('d','M'+x+' '+y+'h'+size+'v'+size+'h-'+size+'z M'+x+' '+(y+(i?29:48))+'h'+size+'v'+size+'h-'+size+'z');path.setAttribute('class','matrix-colon');svg.appendChild(path);});
   $('clock').appendChild(svg);
  }
  function clock(){
@@ -86,16 +86,33 @@
   });
   renderInputs();if(!shown.length)box.appendChild(el('p','empty-state',all?'Keine Apps gefunden.':'Noch keine Favoriten. Über „Alle Apps“ hinzufügen.'));focus();
  }
- function renderInputs(){var row=$('input-row');row.textContent='';inputs.forEach(function(a,i){var b=el('button','input',a.label);if(a.connected!==undefined)b.appendChild(el('small','',a.connected?'verbunden':'frei'));b.onclick=function(){section=2;index=i;activate();};row.appendChild(b);});}
+ function lineIcon(paths,cls){var n=document.createElementNS(svgNS,'svg');n.setAttribute('viewBox','0 0 24 24');n.setAttribute('class',cls);n.setAttribute('fill','none');n.setAttribute('stroke','currentColor');n.setAttribute('stroke-width','1.6');n.setAttribute('stroke-linecap','round');n.setAttribute('stroke-linejoin','round');n.setAttribute('aria-hidden','true');n.innerHTML=paths;return n;}
+ var hdmiIcon='<path d="M3 7h18v7l-4 4H7l-4-4Z"/><path d="M7 11h10M9 14h6"/>',tvIcon='<rect x="3" y="6" width="18" height="14" rx="2"/><path d="m8 2 4 4 4-4"/>';
+ function renderInputs(){var row=$('input-row');row.textContent='';inputs.forEach(function(a,i){var b=el('button','input');b.appendChild(lineIcon(a.hdmi?hdmiIcon:tvIcon,'input-symbol'));var copy=el('span','input-copy');copy.appendChild(el('span','input-name',a.label));if(a.connected!==undefined){copy.appendChild(el('small','',a.connected?'verbunden':'frei'));var dot=el('span','input-status'+(a.connected?' connected':''));dot.setAttribute('aria-hidden','true');b.appendChild(dot);}b.appendChild(copy);b.setAttribute('aria-label',a.label+(a.connected!==undefined?(a.connected?', verbunden':', frei'):''));b.onclick=function(){section=2;index=i;activate();};row.appendChild(b);});}
  function nodes(){return section===0?$('toolbar').children:section===1?$('tiles').querySelectorAll('.app'):$('input-row').children;}
  function focus(){
   var old=document.querySelectorAll('.focused');for(var j=0;j<old.length;j++){old[j].classList.remove('focused');old[j].removeAttribute('data-focused');}
   if(menu){var options=$('options').children;menu.index=Math.max(0,Math.min(menu.index,options.length-1));if(options[menu.index])options[menu.index].classList.add('focused');return;}
   var ns=nodes();if(!ns.length&&section===1){section=0;index=0;ns=nodes();}
   index=Math.max(0,Math.min(index,ns.length-1));if(ns[index]){ns[index].classList.add('focused');ns[index].setAttribute('data-focused','true');}
-  var row=section===1?Math.floor(index/6):0;$('tiles').style.transform='translateY('+(-Math.max(0,row-1)*228)+'px)';
+  var row=section===1?Math.floor(index/6):0;$('tiles').style.transform='translateY('+(-row*252)+'px)';
  }
- function openMenu(title,options){menu={options:options,index:0};$('dialog-title').textContent=title;$('options').textContent='';options.forEach(function(o,i){var b=el('button','option',o[0]);b.onclick=function(){menu.index=i;choose();};$('options').appendChild(b);});$('modal').classList.remove('hidden');focus();}
+ function openMenu(title,options){menu={options:options,index:0};$('dialog-title').textContent=title;$('options').textContent='';options.forEach(function(o,i){var b=el('button','option');var label=o[0],detail='';
+   if(title==='Einstellungen'){
+    if(i===0){label='Darstellung';detail=prefs.theme==='light'?'Hell':'Dunkel';}
+    if(i===2)label='TV-Einstellungen';
+    if(i===3)label='Eingangsquellen';
+    if(i===4){label='Animationen';detail='Aus';}
+    if(i===5){label='Kachellicht';detail=prefs.glow?'Ein':'Aus';}
+    if(i===1||i===4||i===6)b.classList.add('group-start');
+   }
+   if(title==='Einstellungen'){
+    var icons=['<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l2 2m10 10 2 2M5 19l2-2M17 7l2-2"/>','<path d="m3 10 9-7 9 7M5 9v12h14V9M9 21v-7h6v7"/>',tvIcon,hdmiIcon,'<path d="m12 3 2 4-2 4-2-4Zm-6 8 2 4-2 4-2-4Zm12 0 2 4-2 4-2-4Z"/>','<path d="M9 17c0-3-3-4-3-7a6 6 0 0 1 12 0c0 3-3 4-3 7ZM9 20h6"/>','<path d="M20 8a8 8 0 1 0 0 8M20 3v5h-5"/>','<path d="m5 5 14 14M5 19 19 5"/>'];
+    b.appendChild(lineIcon(icons[i]||icons[7],'option-icon'));
+   }
+   b.appendChild(el('span','option-name',label));
+   if(detail)b.appendChild(el('span','option-detail',detail));
+   b.setAttribute('aria-label',label+(detail?', '+detail:''));b.onclick=function(){menu.index=i;choose();};$('options').appendChild(b);});$('modal').classList.remove('hidden');focus();}
  function closeMenu(){menu=null;$('modal').classList.add('hidden');focus();}
  function choose(){var fn=menu.options[menu.index][1];closeMenu();fn();}
  function move(id,delta){var p=prefs.order.indexOf(id),q=p+delta;if(p<0||q<0||q>=prefs.order.length){toast('Hier ist der Rand der Favoriten.');return;}prefs.order.splice(p,1);prefs.order.splice(q,0,id);save();index=q;render();}
@@ -105,7 +122,7 @@
  ['Samsung Home',function(){launch('com.samsung.tv.csfs');}],
  ['TV-Einstellungen über Samsung Home',function(){launch('com.samsung.tv.csfs');}],
  ['Quellen öffnen',function(){launch('org.tizen.SMSourceAPP');}],
- [prefs.reduceMotion?'Animationen: reduziert → normal':'Animationen: normal → reduziert',function(){prefs.reduceMotion=!prefs.reduceMotion;save();appearance();}],
+ [prefs.reduceMotion?'Animationen: reduziert → normal':'Animationen: normal → reduziert',function(){toast('Animationen sind in dieser Version deaktiviert.');}],
  [prefs.glow?'Örtliches Kachellicht ausschalten':'Örtliches Kachellicht einschalten',function(){prefs.glow=!prefs.glow;save();appearance();}],
  ['Apps neu einlesen',function(){load();}],
  ['Schließen',function(){}]

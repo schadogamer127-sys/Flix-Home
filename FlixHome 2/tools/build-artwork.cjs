@@ -7,23 +7,38 @@ const colors={youtube:'#e45953',netflix:'#d85663',primevideo:'#63a8d6',disneyplu
 (async()=>{
  for(const light of [false,true]){
   const mode=light?'light':'dark';
-  const scene=`<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540"><defs><linearGradient id="b" x2="1" y2="1"><stop stop-color="${light?'#f0e6d2':'#222b35'}"/><stop offset=".58" stop-color="${light?'#e4d7bd':'#161e28'}"/><stop offset="1" stop-color="${light?'#cfba96':'#101820'}"/></linearGradient></defs><rect width="960" height="540" fill="url(#b)"/></svg>`;
+  const scene=`<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540"><defs>
+   <linearGradient id="b" x2=".85" y2="1"><stop stop-color="${light?'#f6f0e6':'#080a0d'}"/><stop offset=".62" stop-color="${light?'#f0e8db':'#050608'}"/><stop offset="1" stop-color="${light?'#e5dac8':'#030405'}"/></linearGradient>
+   <radialGradient id="l" cx=".35" cy=".18" r=".8"><stop stop-color="${light?'#fffaf0':'#76818b'}" stop-opacity="${light?'.28':'.055'}"/><stop offset="1" stop-color="${light?'#fffaf0':'#76818b'}" stop-opacity="0"/></radialGradient>
+   </defs><rect width="960" height="540" fill="url(#b)"/><rect width="960" height="540" fill="url(#l)"/></svg>`;
   await sharp(Buffer.from(scene)).png().toFile(path.join(dir,`scene-${mode}.png`));
   for(const active of [false,true]){
-   const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="258" height="158"><defs><linearGradient id="g" x2=".55" y2="1"><stop stop-color="${light?'#fffaf0':'#737f8d'}" stop-opacity="${light?.68:.20}"/><stop offset="1" stop-color="${light?'#ddceb2':'#283443'}" stop-opacity="${light?.68:.45}"/></linearGradient><linearGradient id="edge" x2=".7" y2="1"><stop stop-color="${light?'#fffaf0':'#dae4f0'}" stop-opacity="${active?.95:.50}"/><stop offset=".5" stop-color="${light?'#a58c62':'#8697ac'}" stop-opacity="${active?.50:.20}"/><stop offset="1" stop-color="${light?'#d6b879':'#b9c8d7'}" stop-opacity="${active?.8:.20}"/></linearGradient></defs><rect x="1" y="1" width="256" height="156" rx="23" fill="url(#g)" stroke="url(#edge)" stroke-width="${active?2:1}"/><path d="M26 2H232" stroke="${light?'#fffdf5':'#d5dfeb'}" opacity=".23"/></svg>`;
+   const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="282" height="248"><defs>
+    <linearGradient id="body" x1="0" y1="0" x2=".65" y2="1"><stop stop-color="${light?(active?'#fffaf0':'#f5f0e6'):(active?'#303237':'#24282c')}"/><stop offset=".52" stop-color="${light?(active?'#faf2e5':'#f2ebdf'):(active?'#171a1f':'#101419')}"/><stop offset="1" stop-color="${light?(active?'#eee2cf':'#e9dfcf'):(active?'#17191d':'#0b1015')}"/></linearGradient>
+    <linearGradient id="edge" x2=".7" y2="1"><stop stop-color="${light?'#ffffff':'#d5dfe7'}" stop-opacity="${active?'.60':'.36'}"/><stop offset=".48" stop-color="${light?'#b6a78e':'#8c9aa6'}" stop-opacity=".12"/><stop offset="1" stop-color="${light?'#fefaf2':'#7b8996'}" stop-opacity=".30"/></linearGradient>
+    <linearGradient id="shine" x2="1" y2=".8"><stop stop-color="#fff" stop-opacity="${light?'.38':'.10'}"/><stop offset=".7" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-30%" width="140%" height="170%"><feGaussianBlur stdDeviation="3"/></filter>
+    </defs>
+    <rect x="15" y="21" width="252" height="214" rx="28" fill="${light?'#61513a':'#000'}" opacity="${light?'.14':'.25'}" filter="url(#shadow)"/>
+    <rect x="12" y="12" width="258" height="220" rx="28" fill="url(#body)" stroke="url(#edge)" stroke-width="1.2"/>
+    <rect x="14" y="14" width="254" height="216" rx="26" fill="url(#shine)"/>
+    <path d="M38 14H244 Q268 14 268 38" fill="none" stroke="${light?'#fffdf8':'#dbe4eb'}" opacity="${light?'.55':'.16'}" stroke-width="1"/>
+    <path d="M37 229H245" fill="none" stroke="${light?'#fff9ec':'#87939e'}" opacity="${light?'.5':'.16'}" stroke-width="1"/>
+   </svg>`;
    await sharp(Buffer.from(svg)).png().toFile(path.join(dir,`glass-${mode}-${active?'active':'normal'}.png`));
   }
  }
  for(const [key,color] of Object.entries(colors)){
-  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="330" height="230"><defs><filter id="g" x="-30%" y="-40%" width="160%" height="180%"><feGaussianBlur stdDeviation="12"/></filter></defs><rect x="40" y="41" width="250" height="149" rx="23" fill="${color}" opacity=".55" filter="url(#g)"/></svg>`;
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="330" height="284"><defs><filter id="g" x="-30%" y="-40%" width="160%" height="180%"><feGaussianBlur stdDeviation="12"/></filter></defs><rect x="40" y="41" width="250" height="203" rx="23" fill="${color}" opacity=".55" filter="url(#g)"/></svg>`;
   await sharp(Buffer.from(svg)).png().toFile(path.join(dir,`glow-${key}.png`));
  }
  for(const key of Object.keys(colors).filter(k=>k!=='neutral'))for(const light of [false,true]){
   let svg;
-  if(key==='max')svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 100"><text x="75" y="43" text-anchor="middle" fill="currentColor" font-family="Arial,sans-serif" font-size="34" font-weight="700">HBO</text><text x="75" y="88" text-anchor="middle" fill="currentColor" font-family="Arial,sans-serif" font-size="49" font-weight="600">max</text></svg>';
+  if(key==='max')svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 80"><text x="85" y="60" text-anchor="middle" fill="currentColor" font-family="Arial,sans-serif" font-size="68" font-weight="600" letter-spacing="-3">max</text></svg>';
   else svg=fs.readFileSync(path.join(sourceDir,key+'.svg'),'utf8');
   // Colour the vector mark itself, never add an opaque logo background.
-  const color=key==='netflix'?(light?'#a82a38':'#f16d77'):(light?'#4b3d2c':'#f1f3f6');
+  const brandColors={youtube:'#ff1827',netflix:'#e50914',primevideo:light?'#007da8':'#23b6ec',disneyplus:light?'#193d70':'#f1f3f6',max:light?'#7423bc':'#ac76ef',twitch:light?'#7631b8':'#ad75f1',spotify:light?'#087d39':'#48ce7a',plex:light?'#8e650d':'#e4b44e',crunchyroll:'#df712e'};
+  const color=brandColors[key]||(light?'#4b3d2c':'#f1f3f6');
   svg=svg.replace(/#fff(?:fff)?\b/gi,color).replace(/currentColor/g,color);
   const vb=svg.match(/viewBox="([^"]+)"/)[1].split(/\s+/).map(Number);
   const raster=await sharp(Buffer.from(svg)).resize(480,480,{fit:'fill'}).png().toBuffer();

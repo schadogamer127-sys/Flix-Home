@@ -1,8 +1,8 @@
 # Flix Home · experimental Tizen TV launcher
 
-A quiet, remote-first launcher for older Samsung Tizen TVs. Version 0.4.1 uses
+A quiet, remote-first launcher for older Samsung Tizen TVs. Version 0.5.1 uses
 an actual fixed 5×7 square-pixel clock, separated transparent vector marks,
-subtle glass cards and per-card fading light. The full-screen scene does not
+subtle glass cards and local focus light. The full-screen scene does not
 change during app navigation. A two-label light/dark switch stays visible;
 the light palette is warm beige. Favorites can be sorted/hidden with the remote.
 No ads, feeds, remote servers or analytics. No continuously running PC is needed.
@@ -18,13 +18,16 @@ T-KTM2DEUC-1360.0, Tizen 4.0 / ARMv7 confirmed via SDB. The code targets its old
 web engine: no ES modules, CSS grid, live backdrop blur or external fonts.
 Other TVs are untested; this repository does not remove any firmware guards.
 
-On the target, the preceding build was physically confirmed to launch YouTube,
-respond to the remote and return to Samsung Home. In 0.4.1 the UI was visually
-checked in a browser in both modes and settings views, including a recorded
-navigation sequence. Captured frame comparisons confirm unchanged pixels
-outside the clock and tile row. These are browser checks, not TV footage.
-Installation and an app-debugger DOM/asset check are separate TV checks;
-physical TV smoothness is not inferred from browser rendering.
+On the target, YouTube launch and Samsung Home return were physically confirmed.
+Both 0.5.0 and 0.5.1 were installed and launched successfully. The owner confirmed
+correct light/dark rendering and responsive navigation for 0.5.0, and correct
+rendering and responsive navigation again after the 0.5.1 refinement.
+This is subjective device validation, not a measured frame-rate claim.
+
+The 0.5.1 home and settings views were also captured and visually inspected at
+1920×1080 in a browser. Preview data is mocked; these images are not TV footage.
+The capture harness only disables preview scaling to keep full resolution.
+No missing images or live CSS filters were found in the inspected browser view.
 
 HDMI switching to a connected source, physical Home replacement, cold boot and
 standby autostart remain unverified or unsupported. A settings launch callback
@@ -43,9 +46,17 @@ Open http://127.0.0.1:8092. A browser uses mock apps and inputs.
 Use arrow keys, Enter and Escape. On TV, use the remote's arrows, OK and Back.
 Hold OK to edit an app; The visible top-right switch always shows Hell and Dunkel; the selected half and keyboard focus have separate indicators. Settings also contains the toggle. Preferences
 stay in localStorage. Only changed matrix paths update once a second; digit size and spacing stay
-fixed. Local card glows and rims fade for 160 ms, with no position/scale motion
-or animation queue. Reduced animation can be enabled in Settings and is also
-respected through prefers-reduced-motion in the browser.
+fixed. This material-design pass deliberately disables transitions and motion.
+Focus updates immediately; precomputed local glows appear only behind the
+selected tile. The Animationen row reports Aus. It is not an animation toggle
+in this static revision. No live blur or background movement is used.
+
+![Home and settings in both themes — browser preview](docs/preview.jpg)
+
+0.5.1 adds coloured transparent marks, labels inside the tiles, individual
+input pills with outline icons and connection indicators, and settings icons.
+Disney+ uses a compact D+ mark; HBO/max uses a plain typographic fallback.
+These are deliberate asset choices, not exact reproductions of every mockup.
 
 ## Build and install on your own TV
 
