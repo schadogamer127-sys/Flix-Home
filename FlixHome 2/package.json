@@ -1,0 +1,12 @@
+{
+  "name": "flix-home-tizen",
+  "version": "0.4.1",
+  "private": true,
+  "description": "Minimal experimental Tizen TV launcher",
+  "scripts": {
+    "artwork": "node tools/build-artwork.cjs"
+  },
+  "devDependencies": {
+    "sharp": "0.34.5"
+  }
+}

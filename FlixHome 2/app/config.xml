@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="https://example.org/flixhome" version="0.4.1" viewmodes="maximized">
+<tizen:application id="FlixHome01.Home" package="FlixHome01" required_version="4.0"/>
+<content src="index.html"/><name>Flix Home</name><icon src="icon.png"/>
+<feature name="http://tizen.org/feature/screen.size.normal.1080.1920"/>
+<tizen:profile name="tv-samsung"/>
+<tizen:privilege name="http://tizen.org/privilege/application.launch"/>
+<tizen:privilege name="http://tizen.org/privilege/application.info"/>
+<tizen:privilege name="http://tizen.org/privilege/tv.window"/>
+<tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"/>
+<tizen:setting screen-orientation="landscape" context-menu="disable" background-support="disable" encryption="disable" install-location="auto" hwkey-event="enable"/>
+</widget>

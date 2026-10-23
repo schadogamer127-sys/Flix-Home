@@ -1,0 +1,91 @@
+/* Flix Home 0.4.1: Tizen 4 / Chromium 56. Static scene; local opacity transitions. */
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #11161d; color: #f2f3f5; font-family: 'SamsungOne', 'Helvetica Neue', Arial, sans-serif; cursor: none; }
+button { font: inherit; color: inherit; outline: 0; border: 0; cursor: inherit; }
+#stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; transform-origin: 0 0; }
+#background { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: url('assets/scene-dark.png') center / 100% 100% no-repeat; }
+header { position: absolute; top: 100px; left: 630px; width: 660px; text-align: center; }
+#clock { width: 660px; height: 157px; color: #f4f2ea; background: none; }
+#clock svg { width: 660px; height: 157px; display: block; }
+.matrix-digit, .matrix-colon { fill: currentColor; stroke: currentColor; stroke-opacity: .18; stroke-width: .7; }
+#date { color: #c1c7cf; font-size: 29px; line-height: 40px; margin-top: 26px; }
+#toolbar { position: absolute; right: 108px; top: 128px; display: flex; align-items: center; padding: 8px; height: 80px; border: 1px solid #4a515c; border-radius: 42px; background: #272e38; }
+.pill { position: relative; display: flex; align-items: center; justify-content: center; width: 62px; height: 62px; margin-right: 6px; background: transparent; border-radius: 32px; color: #d4dae1; }
+.pill svg { width: 28px; height: 28px; }
+.nav-label { position: absolute; top: 86px; left: -62px; width: 186px; text-align: center; font-size: 22px; white-space: nowrap; opacity: 0; }
+.pill.focused { color: #fff; box-shadow: 0 0 0 3px #e9cf9a; }
+.pill.focused .nav-label { opacity: 1; }
+.theme-switch { width: 238px; margin: 0 0 0 8px; padding: 0; background: #121820; border: 1px solid #626b78; }
+.mode-selection { position: absolute; top: 5px; left: 5px; width: 112px; height: 50px; border-radius: 27px; background: #eef0f2; transform: translateX(114px); transition: transform 160ms ease-out; }
+.mode-label { position: relative; z-index: 1; display: block; width: 50%; font-size: 23px; text-align: center; font-weight: 500; }
+.mode-light { color: #cbd3dd; }
+.mode-dark { color: #202730; font-weight: 600; }
+#content { position: absolute; left: 78px; top: 346px; width: 1764px; }
+h1, h2 { font-weight: 500; margin: 0; }
+h1 { margin-left: 48px; margin-bottom: 8px; font-size: 29px; line-height: 34px; color: #d7dce3; }
+/* Padding is larger than the halo. The clipped scrolling viewport never clips a visible tile's own glow. */
+#viewport { height: 520px; width: 1764px; padding: 38px 48px 40px; overflow: hidden; }
+#tiles { display: flex; flex-wrap: wrap; width: 1692px; }
+.app { position: relative; flex-shrink: 0; width: 258px; height: 197px; margin: 0 24px 31px 0; padding: 0; border: 0; background: transparent; text-align: center; overflow: visible; }
+.tile-glow { position: absolute; z-index: 0; left: -36px; top: -36px; width: 330px; height: 230px; opacity: 0; pointer-events: none; transition: opacity 160ms ease-out; }
+.surface { position: absolute; left: 0; top: 0; width: 258px; height: 158px; z-index: 1; pointer-events: none; }
+.surface-active { opacity: 0; transition: opacity 160ms ease-out; }
+.logo-inner { position: absolute; z-index: 2; top: 0; left: 0; width: 258px; height: 158px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 24px; pointer-events: none; }
+.logo { display: block; width: 132px; height: 94px; object-fit: contain; opacity: 1; }
+.logo-netflix { width: 68px; height: 91px; }
+.logo-youtube { width: 129px; height: 91px; }
+.logo-primevideo { width: 166px; height: 91px; }
+.logo-disneyplus { width: 110px; height: 96px; }
+.logo-twitch { width: 89px; height: 93px; }
+.logo-max { width: 137px; height: 91px; }
+.fallback { font-size: 75px; font-weight: 500; line-height: 1; color: #f2f3f5; }
+.label { position: absolute; z-index: 2; left: -10px; right: -10px; top: 178px; font-size: 25px; line-height: 30px; color: #c4cbd4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.app.focused .tile-glow { opacity: .85; }
+.app.focused .surface-active { opacity: 1; }
+.app.focused .label { color: #fff; font-weight: 600; }
+/* A separate, immediate rim identifies focus even mid-fade or on rapid input. */
+.app.focused:after { content: ''; position: absolute; z-index: 3; left: 0; top: 0; width: 258px; height: 158px; border: 2px solid #f6e5bc; border-radius: 24px; pointer-events: none; }
+#sources { position: absolute; left: 126px; top: 932px; width: 1668px; }
+#sources h2 { float: left; width: 164px; font-size: 25px; line-height: 66px; color: #c4cbd4; }
+#input-row { display: flex; }
+.input { min-width: 220px; height: 66px; padding: 0 24px; margin-right: 16px; border: 1px solid #59616d; border-radius: 24px; background: #272f3a; color: #e4e8ee; text-align: left; font-size: 24px; }
+.input small { margin-left: 14px; font-size: 18px; color: #b4bfce; }
+.input.focused { box-shadow: 0 0 0 3px #ead3a3; background: #394454; color: #fff; }
+footer { position: absolute; left: 126px; right: 126px; bottom: 26px; display: flex; justify-content: space-between; color: #abb6c5; font-size: 19px; }
+.hidden { display: none !important; }
+#modal { position: absolute; z-index: 10; top: 0; left: 0; width: 1920px; height: 1080px; background: rgba(4,8,14,.72); display: flex; align-items: center; justify-content: center; }
+#dialog { width: 860px; padding: 36px; border: 1px solid #657182; border-radius: 30px; background: #252e3a; box-shadow: 0 18px 40px rgba(0,0,0,.22); }
+#dialog h2 { margin: 0 16px 25px; font-size: 35px; line-height: 44px; color: #fff; }
+.option { display: block; width: 100%; min-height: 66px; padding: 16px 24px; margin-top: 10px; border: 1px solid #4c596b; border-radius: 17px; background: #303b49; color: #eef1f5; text-align: left; font-size: 27px; line-height: 34px; }
+.option.focused { background: #435268; color: #fff; box-shadow: 0 0 0 3px #ead3a3; }
+#toast { position: absolute; z-index: 20; left: 360px; right: 360px; bottom: 104px; padding: 22px; border: 1px solid #6d7d90; border-radius: 22px; background: #2a3544; color: #fff; font-size: 25px; text-align: center; }
+.empty-state { padding: 24px; font-size: 28px; }
+/* Day palette: continuous warm ivory scene, dark type, dense menu surfaces. */
+.light { color: #3f352a; }
+.light #background { background-image: url('assets/scene-light.png'); }
+.light #clock { color: #4b4032; }
+.light #date, .light h1, .light #sources h2, .light .label { color: #615342; }
+.light #toolbar { background: #eee4d2; border-color: #bcb09b; }
+.light .pill { color: #574936; }
+.light .pill.focused { box-shadow: 0 0 0 3px #705528; color: #33291c; }
+.light .theme-switch { background: #c8b99e; border-color: #a48e6b; }
+.light .mode-selection { background: #fff9eb; transform: translateX(0); }
+.light .mode-light { color: #3c3021; font-weight: 600; }
+.light .mode-dark { color: #473b2b; font-weight: 400; }
+.light .fallback { color: #483b29; }
+.light .app.focused .label { color: #3c2c16; }
+.light .app.focused:after { border-color: #8c6a32; }
+.light .app.focused .tile-glow { opacity: .6; }
+.light .input { background: #eee4d2; border-color: #b6a68c; color: #483a27; }
+.light .input small { color: #716147; }
+.light .input.focused { box-shadow: 0 0 0 3px #705528; background: #fff4de; color: #33291c; }
+.light footer { color: #77684f; }
+.light #modal { background: rgba(64,49,29,.42); }
+.light #dialog { background: #f0e5d0; border-color: #a89572; box-shadow: 0 18px 40px rgba(60,40,10,.16); }
+.light #dialog h2 { color: #3b2f20; }
+.light .option { color: #473823; background: #e6d8be; border-color: #b5a181; }
+.light .option.focused { color: #2e2110; background: #fff5df; box-shadow: 0 0 0 3px #705528; }
+.light #toast { background: #fff3dc; color: #3c2f1c; border-color: #9b8156; }
+.reduce-motion .tile-glow, .reduce-motion .surface-active, .reduce-motion .mode-selection { transition: none; }
+.no-glow .tile-glow { display: none; }
+@media (prefers-reduced-motion: reduce) { .tile-glow, .surface-active, .mode-selection { transition: none; } }
