@@ -1,9 +1,9 @@
-/* Flix Home 0.5.0 — static material study. Tizen 4 / Chromium 56. */
+/* Flix Home 0.5.2 — translucent layers, composited focus fades. */
 * { box-sizing:border-box; }
 html,body { margin:0;width:100%;height:100%;overflow:hidden;background:#15191e;font-family:'SamsungOne','Helvetica Neue',Arial,sans-serif;cursor:none; }
 button { font:inherit;color:inherit;border:0;cursor:inherit;outline:0; }
-#stage { --text:#f0f1ef;--muted:#b5bbc2;--subtle:#969fa9;--surface:#11151a;--elevated:#15191e;--rim:rgba(219,228,239,.22);--focus:#e8edf0;--focus-fill:#2d3237;--overlay:rgba(0,0,0,.48);--inner:rgba(255,255,255,.13);--shadow:rgba(0,0,0,.22);position:relative;width:1920px;height:1080px;overflow:hidden;transform-origin:0 0;color:var(--text); }
-#stage.light { --text:#342f29;--muted:#655e54;--subtle:#776e61;--surface:#f6f0e6;--elevated:#f5eee3;--rim:rgba(111,96,76,.20);--focus:#b57848;--focus-fill:#fffbf3;--overlay:rgba(65,53,35,.26);--inner:rgba(255,255,255,.85);--shadow:rgba(74,57,32,.12); }
+#stage { --text:#f0f1ef;--muted:#b5bbc2;--subtle:#969fa9;--surface:rgba(32,39,47,.40);--elevated:rgba(20,25,31,.94);--rim:rgba(219,228,239,.22);--focus:#e8edf0;--focus-fill:#2d3237;--overlay:rgba(0,0,0,.48);--inner:rgba(255,255,255,.13);--shadow:rgba(0,0,0,.22);position:relative;width:1920px;height:1080px;overflow:hidden;transform-origin:0 0;color:var(--text); }
+#stage.light { --text:#342f29;--muted:#655e54;--subtle:#776e61;--surface:rgba(255,252,244,.32);--elevated:rgba(248,242,232,.95);--rim:rgba(111,96,76,.20);--focus:#b57848;--focus-fill:#fffbf3;--overlay:rgba(65,53,35,.26);--inner:rgba(255,255,255,.85);--shadow:rgba(74,57,32,.12); }
 #background { position:absolute;left:0;top:0;width:1920px;height:1080px;background:url('assets/scene-dark.png') center/100% 100% no-repeat; }
 .light #background { background-image:url('assets/scene-light.png'); }
 header { position:absolute;top:120px;left:580px;width:760px;text-align:center; }
@@ -17,12 +17,12 @@ header { position:absolute;top:120px;left:580px;width:760px;text-align:center; }
 .nav-label { position:absolute;top:82px;left:-64px;width:188px;text-align:center;font-size:22px;white-space:nowrap;opacity:0;color:var(--text); }
 .pill.focused { color:var(--text);background:var(--focus-fill);box-shadow:0 0 0 2px var(--focus),inset 0 1px 0 var(--inner); }
 .pill.focused .nav-label { opacity:1; }
-.theme-switch { width:220px;margin:0 0 0 14px;background:rgba(0,0,0,.20);box-shadow:inset 0 2px 5px rgba(0,0,0,.18);border:1px solid var(--rim); }
-.theme-switch.focused { background:rgba(0,0,0,.20);box-shadow:0 0 0 2px var(--focus); }
+.theme-switch { width:220px;margin:0 0 0 14px;background:rgba(0,0,0,.12);box-shadow:inset 0 2px 5px rgba(0,0,0,.18);border:1px solid var(--rim); }
+.theme-switch.focused { background:rgba(0,0,0,.12);box-shadow:0 0 0 2px var(--focus); }
 .mode-selection { position:absolute;top:5px;left:5px;width:103px;height:48px;border-radius:26px;background:linear-gradient(#f5f5f0,#cbd0d3);box-shadow:inset 0 1px 0 #fff,0 3px 6px rgba(0,0,0,.25);transform:translateX(105px); }
 .mode-label { position:relative;z-index:1;display:block;width:50%;font-size:22px;text-align:center;font-weight:500; }
 .mode-light { color:#c5cbd2; }.mode-dark { color:#252b31;font-weight:600; }
-.light .theme-switch,.light .theme-switch.focused { background:#d9d0c1; }
+.light .theme-switch,.light .theme-switch.focused { background:rgba(133,117,92,.13); }
 .light .mode-selection { background:linear-gradient(#fffdf6,#f3eadb);transform:translateX(0); }
 .light .mode-light { color:#332e27;font-weight:600; }.light .mode-dark { color:#62594b;font-weight:400; }
 #content { position:absolute;left:78px;top:396px;width:1764px; }
@@ -41,8 +41,10 @@ h1 { margin-left:48px;margin-bottom:0;font-size:25px;line-height:34px;color:var(
 .label { position:absolute;z-index:2;left:-10px;right:-10px;top:174px;font-size:25px;line-height:32px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
 .app.focused .tile-glow { opacity:.65; }.light .app.focused .tile-glow { opacity:.38; }
 .app.focused .surface-active { opacity:1; }
+.app.focused .surface-normal { opacity:0; }
 .app.focused .label { color:var(--text);font-weight:600; }
-.app.focused:after { content:'';position:absolute;z-index:3;left:0;top:0;width:258px;height:220px;border-radius:28px;box-shadow:0 0 0 2px var(--app-accent,var(--focus));pointer-events:none; }
+.app:after { content:'';position:absolute;z-index:3;left:0;top:0;width:258px;height:220px;border-radius:28px;box-shadow:0 0 0 2px var(--app-accent,var(--focus));pointer-events:none;opacity:0; }
+.app.focused:after { opacity:1; }
 #sources { position:absolute;left:126px;top:818px;width:1668px; }
 #sources h2 { font-size:27px;line-height:40px;color:var(--muted); }
 #input-row { display:flex;margin-top:24px; }
@@ -62,7 +64,16 @@ footer { position:absolute;left:126px;right:126px;bottom:48px;display:flex;justi
 .option-detail { color:var(--muted);font-size:22px;padding-left:28px;white-space:nowrap; }
 #toast { position:absolute;z-index:20;left:360px;right:360px;bottom:142px;padding:24px;border:1px solid var(--rim);border-radius:24px;background:var(--elevated);color:var(--text);box-shadow:0 10px 28px var(--shadow);font-size:25px;text-align:center; }
 .empty-state { padding:24px;font-size:28px; }.no-glow .tile-glow { display:none; }
-/* Static review: no transitions, filters, zoom or continuous effects. */
+/* Only opacity and the small switch thumb animate; focus itself is immediate.
+   No live blur, animated shadows, global colour motion or animation queues. */
+.tile-glow,.surface,.app:after { transition:opacity 160ms cubic-bezier(.2,.65,.3,1); }
+.mode-selection { transition:transform 180ms cubic-bezier(.2,.65,.3,1); }
+.nav-label { transition:opacity 140ms ease-out; }
+#modal:not(.hidden) #dialog { animation:dialog-in 160ms ease-out both; }
+@keyframes dialog-in { from { opacity:0;transform:translateY(7px); } to { opacity:1;transform:translateY(0); } }
+.reduce-motion .tile-glow,.reduce-motion .surface,.reduce-motion .app:after,.reduce-motion .mode-selection,.reduce-motion .nav-label { transition:none; }
+.reduce-motion #dialog { animation:none!important; }
+@media (prefers-reduced-motion:reduce) { .tile-glow,.surface,.app:after,.mode-selection,.nav-label {transition:none!important} #dialog{animation:none!important} }
 
 /* Brand accents remain local to the selected card. */
 .app[data-brand="youtube"]{--app-accent:#ff6a50}.app[data-brand="netflix"]{--app-accent:#e45b61}.app[data-brand="primevideo"]{--app-accent:#55b7e1}.app[data-brand="disneyplus"]{--app-accent:#72bdde}.app[data-brand="max"]{--app-accent:#b08bdc}.app[data-brand="twitch"]{--app-accent:#b28eea}

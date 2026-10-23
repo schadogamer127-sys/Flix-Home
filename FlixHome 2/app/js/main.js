@@ -54,7 +54,12 @@
  '<path d="m9 3-1 3-3 1-2 5 2 5 3 1 1 3h6l1-3 3-1 2-5-2-5-3-1-1-3Z"/><circle cx="12" cy="12" r="3"/>'
  ];
  function toolbar(){
-  var n=$('toolbar');n.textContent='';
+  var n=$('toolbar');
+  if(n.children.length===4){
+   [all?'Favoriten':'Alle Apps',editing?'Fertig':'Bearbeiten'].forEach(function(label,i){n.children[i].setAttribute('aria-label',label);n.children[i].querySelector('.nav-label').textContent=label;});
+   n.children[3].setAttribute('aria-checked',String(prefs.theme==='light'));return;
+  }
+  n.textContent='';
   [all?'Favoriten':'Alle Apps',editing?'Fertig':'Bearbeiten','Einstellungen','Darstellung'].forEach(function(label,i){
    var button=el('button','pill');button.setAttribute('aria-label',label);
    if(i===3){
@@ -102,7 +107,7 @@
     if(i===0){label='Darstellung';detail=prefs.theme==='light'?'Hell':'Dunkel';}
     if(i===2)label='TV-Einstellungen';
     if(i===3)label='Eingangsquellen';
-    if(i===4){label='Animationen';detail='Aus';}
+    if(i===4){label='Animationen';detail=prefs.reduceMotion?'Reduziert':'Sanft';}
     if(i===5){label='Kachellicht';detail=prefs.glow?'Ein':'Aus';}
     if(i===1||i===4||i===6)b.classList.add('group-start');
    }
@@ -122,7 +127,7 @@
  ['Samsung Home',function(){launch('com.samsung.tv.csfs');}],
  ['TV-Einstellungen über Samsung Home',function(){launch('com.samsung.tv.csfs');}],
  ['Quellen öffnen',function(){launch('org.tizen.SMSourceAPP');}],
- [prefs.reduceMotion?'Animationen: reduziert → normal':'Animationen: normal → reduziert',function(){toast('Animationen sind in dieser Version deaktiviert.');}],
+ [prefs.reduceMotion?'Animationen: reduziert → normal':'Animationen: normal → reduziert',function(){prefs.reduceMotion=!prefs.reduceMotion;save();appearance();}],
  [prefs.glow?'Örtliches Kachellicht ausschalten':'Örtliches Kachellicht einschalten',function(){prefs.glow=!prefs.glow;save();appearance();}],
  ['Apps neu einlesen',function(){load();}],
  ['Schließen',function(){}]

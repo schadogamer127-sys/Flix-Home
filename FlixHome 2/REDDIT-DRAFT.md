@@ -18,7 +18,7 @@ The idea was a quiet interface with big app tiles, a large pixel clock, beige/li
 
 The latest pass is closer to my mockups: coloured transparent logos, labels inside the tiles, separate input pills, warm beige and a nearly black dark mode. There is still work to do on the glass material, lighting and matching the references. Some logos are simplified marks or typographic fallbacks.
 
-Performance has also been a problem. Earlier versions lagged badly with larger animated layers. Version 0.5.1 uses pre-rendered textures and immediate focus changes, with animations disabled for this design pass. Both themes and responsive navigation have now been checked on my actual TV, but this is still an experimental project. Some visual checks and the demo recordings were done in a browser; those aren’t proof of TV performance.
+Performance has also been a problem. Earlier versions lagged badly with larger animated layers. Version 0.5.2 uses translucent pre-rendered glass textures, immediate focus changes and short local opacity fades. Reduced motion can be enabled in Settings. Both themes and responsive navigation have now been checked on my actual TV, but this is still an experimental project. Some visual checks and the demo recordings were done in a browser; those aren’t proof of TV performance.
 
 **What I wanted, but haven’t solved**
 
@@ -29,7 +29,7 @@ Performance has also been a problem. Earlier versions lagged badly with larger a
 
 **Where I’m stuck now**
 
-Codex helped get it running, but I’m going in circles trying to turn the references into a consistent design that this old web engine can actually render smoothly. The attached references are the target; I will include my own current TV recording to show where it is now. Smooth transitions are still on the wishlist, but I want to keep navigation responsive on this old hardware.
+Codex helped get it running, but I’m going in circles trying to turn the references into a consistent design that this old web engine can actually render smoothly. The attached references are the target; I will include my own current TV recording to show where it is now. Short transitions are now implemented, but I want to keep navigation responsive on this old hardware.
 
 What would you change first? I’d appreciate honest design feedback, concrete CSS/SVG suggestions, or help with the Tizen-specific Home/startup limitations. If you’ve built something similar for an older Samsung TV, I’d love to hear what actually worked on your model.
 

@@ -1,4 +1,4 @@
-# Material design, 0.5.1
+# Material design, 0.5.2
 
 The reference review covered all 26 entries on the supplied inspiration board,
 then four user-prepared light/dark home/settings mockups. Reference images are
@@ -15,6 +15,8 @@ surfaces, fine rims, soft local illumination and clear layer separation.
   independent focus outline.
 
 Artwork is generated offline by tools/build-artwork.cjs; the TV does not run
-blur filters or a render loop. Navigation is immediate and intentionally static
-for this revision. The once-per-second clock updates only changed glyph paths.
+blur filters or a render loop. Navigation is immediate. Only local texture/rim opacity (160 ms), the theme
+thumb (180 ms) and panel entry (160 ms) animate. The material fill uses alpha
+so the underlying scene and card glow show through. Reduced motion disables
+transitions and panel entry. No continuously animated layers are used. The once-per-second clock updates only changed glyph paths.
 The TV runs locally without an external service or continuously running PC.

@@ -1,6 +1,6 @@
 # Flix Home · experimental Tizen TV launcher
 
-A quiet, remote-first launcher for older Samsung Tizen TVs. Version 0.5.1 uses
+A quiet, remote-first launcher for older Samsung Tizen TVs. Version 0.5.2 uses
 an actual fixed 5×7 square-pixel clock, separated transparent vector marks,
 subtle glass cards and local focus light. The full-screen scene does not
 change during app navigation. A two-label light/dark switch stays visible;
@@ -24,10 +24,14 @@ correct light/dark rendering and responsive navigation for 0.5.0, and correct
 rendering and responsive navigation again after the 0.5.1 refinement.
 This is subjective device validation, not a measured frame-rate claim.
 
-The 0.5.1 home and settings views were also captured and visually inspected at
+The 0.5.2 home and settings views were also captured and visually inspected at
 1920×1080 in a browser. Preview data is mocked; these images are not TV footage.
 The capture harness only disables preview scaling to keep full resolution.
 No missing images or live CSS filters were found in the inspected browser view.
+The 0.5.2 package was signed, verified, installed and launched on the same TV.
+Its physical motion/rendering check is pending. Browser recordings use timestamped
+screenshots (about 10 captured frames/s); they show navigation and are not a
+TV recording or a frame-rate benchmark.
 
 HDMI switching to a connected source, physical Home replacement, cold boot and
 standby autostart remain unverified or unsupported. A settings launch callback
@@ -46,10 +50,11 @@ Open http://127.0.0.1:8092. A browser uses mock apps and inputs.
 Use arrow keys, Enter and Escape. On TV, use the remote's arrows, OK and Back.
 Hold OK to edit an app; The visible top-right switch always shows Hell and Dunkel; the selected half and keyboard focus have separate indicators. Settings also contains the toggle. Preferences
 stay in localStorage. Only changed matrix paths update once a second; digit size and spacing stay
-fixed. This material-design pass deliberately disables transitions and motion.
-Focus updates immediately; precomputed local glows appear only behind the
-selected tile. The Animationen row reports Aus. It is not an animation toggle
-in this static revision. No live blur or background movement is used.
+fixed. Focus updates immediately. Local light, reflection and rim opacity fade for 160 ms;
+the theme thumb moves for 180 ms and the settings panel enters gently for 160 ms.
+There is no spring, scale animation, live blur or moving background.
+Settings → Animationen switches between Sanft and Reduziert. Reduced motion
+disables these effects and browser prefers-reduced-motion is also respected.
 
 ![Home and settings in both themes — browser preview](docs/preview.jpg)
 
@@ -57,6 +62,9 @@ in this static revision. No live blur or background movement is used.
 input pills with outline icons and connection indicators, and settings icons.
 Disney+ uses a compact D+ mark; HBO/max uses a plain typographic fallback.
 These are deliberate asset choices, not exact reproductions of every mockup.
+0.5.2 makes the tile artwork genuinely translucent, adds restrained diagonal
+reflections and uses translucent input/toolbar materials. Settings retain dense
+surfaces for legibility. The backgrounds and the pixel clock stay fixed.
 
 ## Build and install on your own TV
 
